@@ -1,0 +1,72 @@
+<h1>
+  {{ !hero ? 'Add New Hero' : 'Edit Hero' }}
+</h1>
+<hr>
+
+<div class="d-flex justify-content-end">
+  <button class="btn btn-danger"
+          type="button"
+          routerLink="/heroes/list">
+    <i class="fas fa-angle-double-left"></i>
+    Back to list
+  </button>
+</div>
+
+<ng-container *ngIf="isLoading; else elseTemplate">
+  <app-spinner></app-spinner>
+</ng-container>
+
+<ng-template #elseTemplate>
+  <div class="container my-4">
+    <form [formGroup]="myForm"
+          (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-12 mb-2">
+          <label class="form-label">Name:</label>
+          <input type="text"
+                 class="form-control"
+                 [class.is-invalid]="fieldIsInvalid('name')"
+                 placeholder="Hero name"
+                 formControlName="name">
+          <small class="form-text text-danger"
+                 *ngIf="fieldIsInvalid('name')">
+            Field is required
+          </small>
+        </div>
+        <div class="col-md-12 mb-2">
+          <label class="form-label">Ability:</label>
+          <input type="text"
+                 class="form-control"
+                 [class.is-invalid]="fieldIsInvalid('ability')"
+                 placeholder="Hero ability"
+                 formControlName="ability">
+          <small class="form-text text-danger"
+                 *ngIf="fieldIsInvalid('ability')">
+            Field is required
+          </small>
+        </div>
+        <div class="col-md-12 mb-2">
+          <label class="form-label">Status:</label>
+          <div>
+            <button class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="isAlive = !isAlive">
+              <i class="far fa-thumbs-up"
+                 [ngClass]="{'fa-thumbs-up': isAlive, 'fa-thumbs-down': !isAlive }">
+              </i>
+              {{ isAlive ? 'Alive' : 'Dead' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="d-grid col-4 mx-auto mt-2">
+          <button class="btn btn-primary" type="submit">
+            <i class="far fa-save"></i>
+            Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
