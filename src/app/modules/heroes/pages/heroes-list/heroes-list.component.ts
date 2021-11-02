@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HeroesService } from '../../services/heroes.service';
 import { Hero } from '../../interfaces/heroes-response.interface';
+import { sweetalertConfirmMessage } from 'src/app/shared/helpers/sweetalert.helper';
+import { showSweetAlertLoading, closeSweetAlertLoading } from '../../../../shared/helpers/sweetalert.helper';
 
 @Component({
   selector: 'app-heroes-list',
@@ -10,6 +12,7 @@ import { Hero } from '../../interfaces/heroes-response.interface';
 export class HeroesListComponent implements OnInit {
 
   heroes: Hero[] = [];
+  isLoading: boolean = false;
 
   constructor(private heroesService: HeroesService) { }
 
@@ -18,10 +21,24 @@ export class HeroesListComponent implements OnInit {
   }
 
   getAllHeroes() {
+    this.isLoading = true;
     this.heroesService.getHeroes()
         .subscribe(resp => {
           console.log(resp);
           this.heroes = resp;
+          this.isLoading = false;
         });
+  };
+
+  async deleteHero(heroIndex: number, heroID: string) {
+    const result = await sweetalertConfirmMessage();
+    if (result.isConfirmed) {
+      showSweetAlertLoading('Removing hero...');
+      this.heroesService.deleteHero(heroID)
+          .subscribe(() => {
+            this.heroes.splice(heroIndex, 1);
+            closeSweetAlertLoading();
+          });
+    };
   };
 }

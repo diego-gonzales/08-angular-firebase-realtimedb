@@ -1,6 +1,6 @@
 <h1>Heroes List</h1>
 <hr>
-<div class="d-grid col-4 mx-auto">
+<div class="d-grid col-4 mx-auto animated fadeIn my-5">
   <button class="btn btn-primary"
           type="button"
           routerLink="/heroes/add">
@@ -9,39 +9,50 @@
   </button>
 </div>
 
-<table class="table my-4 text-center">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Name</th>
-      <th>Ability</th>
-      <th>Status</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let hero of heroes; let i = index">
-      <td>{{ i + 1 }}</td>
-      <td>{{ hero.name }}</td>
-      <td>{{ hero.ability }}</td>
-      <td>
-        <span class="badge rounded-pill"
-              [ngClass]="{'bg-warning': hero.isAlive, 'bg-danger': !hero.isAlive, 'text-dark': hero.isAlive }">
-          {{ hero.isAlive ? 'alive' : 'dead' }}
-        </span>
-      </td>
-      <td>
-        <div class="d-grid gap-2 d-md-flex justify-content-center">
-          <button class="btn btn-secondary"
-                  type="button"
-                  [routerLink]="['/heroes/edit', hero.id]">
-            <i class="far fa-edit"></i>
-          </button>
-          <button class="btn btn-danger" type="button">
-            <i class="far fa-trash-alt"></i>
-          </button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<ng-container *ngIf="!heroes.length; else elseTemplate">
+  <app-spinner *ngIf="isLoading"></app-spinner>
+  <app-alert-message *ngIf="!isLoading" [message]="'Heroes list is empty. Add a new hero!'"></app-alert-message>
+</ng-container>
+
+<ng-template #elseTemplate>
+  <table class="table my-4 text-center animated fadeIn">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Ability</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let hero of heroes; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ hero.name }}</td>
+        <td>{{ hero.ability }}</td>
+        <td>
+          <span class="badge rounded-pill"
+                [ngClass]="{'bg-warning': hero.isAlive, 'bg-danger': !hero.isAlive, 'text-dark': hero.isAlive }">
+            {{ hero.isAlive ? 'alive' : 'dead' }}
+          </span>
+        </td>
+        <td>
+          <div class="d-grid gap-2 d-md-flex justify-content-center">
+            <button class="btn btn-secondary"
+                    type="button"
+                    [routerLink]="['/heroes/edit', hero.id]">
+              <i class="far fa-edit"></i>
+            </button>
+            <button class="btn btn-danger"
+                    type="button"
+                    (click)="deleteHero(i, hero.id!)">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
+
+

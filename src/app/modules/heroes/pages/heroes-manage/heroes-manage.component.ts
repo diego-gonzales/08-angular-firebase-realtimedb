@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Hero } from '../../interfaces/heroes-response.interface';
 import { HeroesService } from '../../services/heroes.service';
+import { showSweetAlertLoading, closeSweetAlertLoading } from '../../../../shared/helpers/sweetalert.helper';
 
 @Component({
   selector: 'app-heroes-manage',
@@ -81,16 +82,20 @@ export class HeroesManageComponent implements OnInit {
   };
 
   addHero(newHero: Hero) {
+    showSweetAlertLoading('Creating hero...');
     this.heroesService.postHero(newHero)
         .subscribe((_) => {
           this.router.navigate(['/heroes/list']);
+          closeSweetAlertLoading();
         });
   };
 
   editHero(editedHero: Hero) {
+    showSweetAlertLoading('Updating hero...');
     this.heroesService.updateHero(editedHero, this.hero.id!)
         .subscribe((_) => {
           this.router.navigateByUrl('/heroes/list');
+          closeSweetAlertLoading();
         });
   };
 

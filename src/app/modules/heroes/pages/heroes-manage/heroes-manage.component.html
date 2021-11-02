@@ -4,7 +4,7 @@
 <hr>
 
 <div class="d-flex justify-content-end">
-  <button class="btn btn-danger"
+  <button class="btn btn-danger animated fadeIn"
           type="button"
           routerLink="/heroes/list">
     <i class="fas fa-angle-double-left"></i>
@@ -17,8 +17,9 @@
 </ng-container>
 
 <ng-template #elseTemplate>
-  <div class="container my-4">
+  <div class="abs-center d-flex justify-content-center align-items-center my-4 animated fadeIn fast">
     <form [formGroup]="myForm"
+          class="form"
           (ngSubmit)="onSubmit()">
       <div class="row">
         <div class="col-md-12 mb-2">
@@ -51,7 +52,7 @@
             <button class="btn btn-outline-secondary"
                     type="button"
                     (click)="isAlive = !isAlive">
-              <i class="far fa-thumbs-up"
+              <i class="far"
                  [ngClass]="{'fa-thumbs-up': isAlive, 'fa-thumbs-down': !isAlive }">
               </i>
               {{ isAlive ? 'Alive' : 'Dead' }}
